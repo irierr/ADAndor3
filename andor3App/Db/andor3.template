@@ -343,6 +343,10 @@ record(stringin, "$(P)$(R)ControllerID")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_CONTROLLER_ID")
 }
 
+###############################################################################
+#  These records control the Gating (if present)                              #
+###############################################################################
+
 record(mbbo, "$(P)$(R)GateMode")
 {
    field(PINI, "YES")
@@ -406,3 +410,96 @@ record(bi, "$(P)$(R)MCPIntelligate_RBV")
    field(ONAM, "On")
 }
 
+record(ao, "$(P)$(R)DDGOutputDelay")
+{
+   field(PINI, "YES")
+   field(VAL,  "0")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_DELAY")
+}
+
+record(ai, "$(P)$(R)DDGOutputDelay_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_DELAY")
+   field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)DDGOutputEnable")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_ENABLE")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+}
+
+record(bi, "$(P)$(R)DDGOutputEnable_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_ENABLE")
+   field(SCAN, "I/O Intr")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+}
+
+record(mbbo, "$(P)$(R)DDGOutputPolarity")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_POLARITY")
+}
+
+record(mbbi, "$(P)$(R)DDGOutputPolarity_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_POLARITY")
+   field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)DDGOutputSelect")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_SELECT")
+}
+
+record(mbbi, "$(P)$(R)DDGOutputSelect_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_SELECT")
+   field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(P)$(R)DDGOutputStepEnable")
+{
+   field(PINI, "YES")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_STEP_ENABLE")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+}
+
+record(bi, "$(P)$(R)DDGOutputStepEnable_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_STEP_ENABLE")
+   field(SCAN, "I/O Intr")
+   field(ZNAM, "Disable")
+   field(ONAM, "Enable")
+}
+
+record(ao, "$(P)$(R)DDGOutputWidth")
+{
+   field(PINI, "YES")
+   field(VAL,  "0")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_WIDTH")
+}
+
+record(ai, "$(P)$(R)DDGOutputWidth_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_WIDTH")
+   field(SCAN, "I/O Intr")
+}
