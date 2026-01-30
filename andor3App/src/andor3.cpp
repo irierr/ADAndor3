@@ -1566,7 +1566,7 @@ andor3::andor3(const char *portName, const char *cameraSerial, int maxBuffers,
     status |= registerFeature(L"DDGOutputPolarity",        ATenum,   Andor3DDGOutputPolarity);
     status |= registerFeature(L"DDGOutputSelector",        ATenum,   Andor3DDGOutputSelect);
     status |= registerFeature(L"DDGOutputStepEnable",      ATbool,   Andor3DDGOutputStepEnable);
-    status |= registerFeature(L"DDGOutputWidth",           ATint,    Andor3DDGOutputPolarity);
+    status |= registerFeature(L"DDGOutputWidth",           ATint,    Andor3DDGOutputWidth);
 
     if(status != AT_SUCCESS) {
         asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
