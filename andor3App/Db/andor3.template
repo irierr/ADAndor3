@@ -415,12 +415,14 @@ record(ao, "$(P)$(R)DDGOutputDelay")
     field(PINI, "YES")
     field(VAL,  "0")
     field(DTYP, "asynInt32")
+    field(EGU, "ps")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_DELAY")
 }
 
 record(ai, "$(P)$(R)DDGOutputDelay_RBV")
 {
     field(DTYP, "asynInt32")
+    field(EGU, "ps")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_DELAY")
     field(SCAN, "I/O Intr")
 }
@@ -494,12 +496,14 @@ record(ao, "$(P)$(R)DDGOutputWidth")
     field(PINI, "YES")
     field(VAL,  "0")
     field(DTYP, "asynInt32")
+    field(EGU, "ps")
     field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_WIDTH")
 }
 
 record(ai, "$(P)$(R)DDGOutputWidth_RBV")
 {
     field(DTYP, "asynInt32")
+    field(EGU, "ps")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_WIDTH")
     field(SCAN, "I/O Intr")
 }
