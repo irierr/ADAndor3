@@ -473,16 +473,6 @@ record(mbbi, "$(P)$(R)DDGOutputSelect_RBV")
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_SELECT")
     field(SCAN, "I/O Intr")
-    field(FLNK, "$(P)$(R)DDGOutputSelectFanout")
-}
-
-record(fanout, "$(P)$(R)DDGOutputSelectFanout")
-{
-    field(LNK1, "$(P)$(R)DDGOutputDelay")
-    field(LNK2, "$(P)$(R)DDGOutputWidth")
-    field(LNK3, "$(P)$(R)DDGOutputPolarity")
-    field(LNK4, "$(P)$(R)DDGOutputEnable")
-    field(LNK5, "$(P)$(R)DDGOutputStepEnable")
 }
 
 record(bo, "$(P)$(R)DDGOutputStepEnable")

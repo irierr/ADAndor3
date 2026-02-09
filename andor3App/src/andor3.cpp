@@ -1303,6 +1303,14 @@ asynStatus andor3::writeInt32(asynUser *pasynUser, epicsInt32 value)
         featureInfo *info = &featureInfo_[index];
         if (info->isImplemented) {
             status = setFeature(Andor3DDGOutputSelect);
+            if (status == AT_SUCCESS)
+            {
+                status  = getFeature(Andor3DDGOutputEnable);
+                status |= getFeature(Andor3DDGOutputDelay);
+                status |= getFeature(Andor3DDGOutputPolarity);
+                status |= getFeature(Andor3DDGOutputWidth);
+                status |= getFeature(Andor3DDGOutputStepEnable);
+            }
         }
     }
     else if(index == Andor3DDGOutputStepEnable) {
