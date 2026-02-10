@@ -240,6 +240,20 @@ record(mbbi, "$(P)$(R)A3Binning_RBV")
     field(SCAN, "I/O Intr")
 }
 
+record(mbbo, "$(P)$(R)A3AOILayout")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_AOI_LAYOUT")
+}
+
+record(mbbi, "$(P)$(R)A3AOILayout_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_AOI_LAYOUT")
+    field(SCAN, "I/O Intr")
+}
+
 record(mbbo, "$(P)$(R)A3ShutterMode")
 {
     field(PINI, "YES")

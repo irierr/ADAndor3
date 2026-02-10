@@ -99,6 +99,7 @@ protected:
     int Andor3PixelEncoding;
     int Andor3FullAOIControl;
     int Andor3Binning;
+    int Andor3AOILayout;
     int Andor3ShutterMode;
     int Andor3SoftwareTrigger;
     int Andor3SensorCooling;
@@ -157,6 +158,7 @@ private:
 #define Andor3PixelEncodingString       "A3_PIXEL_ENCODING"        /* asynInt32    rw */
 #define Andor3FullAOIControlString      "A3_FULL_AOI_CONTROL"      /* asynInt32    ro */
 #define Andor3BinningString             "A3_BINNING"               /* asynInt32    rw */
+#define Andor3AOILayoutString           "A3_AOI_LAYOUT"            /* asynInt32    rw */
 #define Andor3ShutterModeString         "A3_SHUTTER_MODE"          /* asynInt32    rw */
 #define Andor3SoftwareTriggerString     "A3_SOFTWARE_TRIGGER"      /* asynInt32    wo */
 #define Andor3SensorCoolingString       "A3_SENSOR_COOLING"        /* asynInt32    rw */
@@ -646,6 +648,7 @@ void andor3::report(FILE *fp, int details)
     reportFeature(ADMinX, fp, details);
     reportFeature(ADMinY, fp, details);
     reportFeature(Andor3Binning, fp, details);
+    reportFeature(Andor3AOILayout, fp, details);
     reportFeature(Andor3ShutterMode, fp, details);
     reportFeature(Andor3PixelEncoding, fp, details);
     reportFeature(Andor3ReadoutRate, fp, details);
@@ -816,6 +819,7 @@ int andor3::setAOI()
     int minY, sizeY, binY;
     int binning;
     int binValues[] = {1, 2, 3, 4, 8};
+    int aoiLayout;
     static const char *functionName = "setAOI";
 
     asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER,
@@ -827,6 +831,7 @@ int andor3::setAOI()
     status |= getIntegerParam(Andor3Binning, &binning);
     status |= getIntegerParam(ADMinX, &minX);
     status |= getIntegerParam(ADMinY, &minY);
+    status |= getIntegerParam(Andor3AOILayout, &aoiLayout);
     if (status) {
         asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
             "%s:%s: error getting values, error=%d\n",
@@ -845,6 +850,7 @@ int andor3::setAOI()
     status |= getIntegerParam(ADMaxSizeY, &maxSizeY);
     width  = (maxSizeX / binX) * binX;
     height = (maxSizeY / binY) * binY;
+    status |= AT_SetEnumIndex(handle_, L"AOILayout", aoiLayout);
     status |= AT_SetEnumIndex(handle_, L"AOIBinning", 0);
     status |= AT_SetInt(handle_, L"AOILeft",   1);
     status |= AT_SetInt(handle_, L"AOITop",    1);
@@ -869,6 +875,7 @@ int andor3::getAOI()
     AT_64 minY, sizeY, binY;
     int binning;
     int binValues[] = {1, 2, 3, 4, 8};
+    int aoiLayout;
     static const char *functionName = "getAOI";
 
     asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER,
@@ -880,9 +887,10 @@ int andor3::getAOI()
     status |= AT_GetInt(handle_, L"AOIHeight", &sizeY);
     status |= AT_GetInt(handle_, L"AOITop",    &minY);
     status |= AT_GetEnumIndex(handle_, L"AOIBinning", &binning);
+    status |= AT_GetEnumIndex(handle_, L"AOILayout", &aoiLayout);
     asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER,
-        "%s:%s: minX=%lld, sizeX=%lld, minY=%lld, sizeY=%lld, binning=%d\n",
-        driverName, functionName, minX, sizeX, minY, sizeY, binning);
+        "%s:%s: minX=%lld, sizeX=%lld, minY=%lld, sizeY=%lld, binning=%d, layout=%d\n",
+        driverName, functionName, minX, sizeX, minY, sizeY, binning, aoiLayout);
     if (status) {
         asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
             "%s:%s: error getting values, error=%d\n",
@@ -898,6 +906,7 @@ int andor3::getAOI()
     status |= setIntegerParam(ADSizeY, (int)(sizeY*binY));
     status |= setIntegerParam(ADMinY,  (int)minY);
     status |= setIntegerParam(Andor3Binning, binning);
+    status |= setIntegerParam(Andor3AOILayout, aoiLayout);
 
     /* set NDArray parameters */
     status |= setIntegerParam(NDArraySizeX, (int)sizeX);
@@ -1211,10 +1220,11 @@ asynStatus andor3::writeInt32(asynUser *pasynUser, epicsInt32 value)
     }
     else if 
        ((index == Andor3Binning) ||
-        (index == ADMinX)  ||
-        (index == ADSizeX) ||
-        (index == ADMinY)  ||
-        (index == ADSizeY)) {
+       (index == ADMinX)  ||
+       (index == ADSizeX) ||
+       (index == ADMinY)  ||
+       (index == ADSizeY) ||
+       (index == Andor3AOILayout)) {
         status = setAOI();
     }
     else if(index == ADReadStatus) {
@@ -1457,6 +1467,7 @@ andor3::andor3(const char *portName, const char *cameraSerial, int maxBuffers,
     createParam(Andor3PixelEncodingString,      asynParamInt32,   &Andor3PixelEncoding);
     createParam(Andor3FullAOIControlString,     asynParamInt32,   &Andor3FullAOIControl);
     createParam(Andor3BinningString,            asynParamInt32,   &Andor3Binning);
+    createParam(Andor3AOILayoutString,          asynParamInt32,   &Andor3AOILayout);
     createParam(Andor3ShutterModeString,        asynParamInt32,   &Andor3ShutterMode);
     createParam(Andor3SoftwareTriggerString,    asynParamInt32,   &Andor3SoftwareTrigger);
     createParam(Andor3SensorCoolingString,      asynParamInt32,   &Andor3SensorCooling);
@@ -1538,6 +1549,7 @@ andor3::andor3(const char *portName, const char *cameraSerial, int maxBuffers,
     status |= registerFeature(L"AOITop",                   ATint,    ADMinY);
     status |= registerFeature(L"AOIBinning",               ATenum,   Andor3Binning);
     status |= registerFeature(L"ImageSizeBytes",           ATint ,   NDArraySize);
+    status |= registerFeature(L"AOILayout",                ATenum,   Andor3AOILayout);
 
     status |= registerFeature(L"SensorCooling",            ATbool,   Andor3SensorCooling);
     status |= registerFeature(L"TargetSensorTemperature",  ATfloat,  ADTemperature);
