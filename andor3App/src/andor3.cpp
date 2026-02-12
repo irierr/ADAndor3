@@ -126,7 +126,14 @@ protected:
     int Andor3DDGOutputSelect;
     int Andor3DDGOutputStepEnable;
     int Andor3DDGOutputWidth;
-    #define LAST_ANDOR3_PARAM Andor3DDGOutputWidth
+    int Andor3DDGStepEnabled;
+    int Andor3DDGStepDelayMode;
+    int Andor3DDGStepDelayCoefficientA;
+    int Andor3DDGStepDelayCoefficientB;
+    int Andor3DDGStepWidthMode;
+    int Andor3DDGStepWidthCoefficientA;
+    int Andor3DDGStepWidthCoefficientB;
+    #define LAST_ANDOR3_PARAM Andor3DDGStepWidthCoefficientB
 private:
     int registerFeature(const AT_WC *feature, Andor3FeatureType type,
                         int paramIndex);
@@ -185,6 +192,13 @@ private:
 #define Andor3DDGOutputSelectString     "A3_DDG_OUTPUT_SELECT"     /* asynInt32    rw */
 #define Andor3DDGOutputStepEnableString "A3_DDG_OUTPUT_STEP_ENABLE"/* asynInt32    rw */
 #define Andor3DDGOutputWidthString      "A3_DDG_OUTPUT_WIDTH"      /* asynInt32    rw */
+#define Andor3DDGStepEnabledString      "A3_DDG_STEP_ENABLE"       /* asynInt32    rw */
+#define Andor3DDGStepDelayModeString    "A3_DDG_STEP_DELAY_MODE"   /* asynInt32    rw */
+#define Andor3DDGStepDelayCoeffAString  "A3_DDG_STEP_DELAY_COEFF_A"/* asynFloat64  rw */
+#define Andor3DDGStepDelayCoeffBString  "A3_DDG_STEP_DELAY_COEFF_B"/* asynFloat64  rw */
+#define Andor3DDGStepWidthModeString    "A3_DDG_STEP_WIDTH_MODE"   /* asynInt32    rw */
+#define Andor3DDGStepWidthCoeffAString  "A3_DDG_STEP_WIDTH_COEFF_A"/* asynFloat64  rw */
+#define Andor3DDGStepWidthCoeffBString  "A3_DDG_STEP_WIDTH_COEFF_B"/* asynFloat64  rw */
 
 static void c_shutdown(void *arg)
 {
@@ -681,6 +695,13 @@ void andor3::report(FILE *fp, int details)
     reportFeature(Andor3DDGOutputSelect, fp, details);
     reportFeature(Andor3DDGOutputStepEnable, fp, details);
     reportFeature(Andor3DDGOutputWidth, fp, details);
+    reportFeature(Andor3DDGStepEnabled, fp, details);
+    reportFeature(Andor3DDGStepDelayMode, fp, details);
+    reportFeature(Andor3DDGStepDelayCoefficientA, fp, details);
+    reportFeature(Andor3DDGStepDelayCoefficientB, fp, details);
+    reportFeature(Andor3DDGStepWidthMode, fp, details);
+    reportFeature(Andor3DDGStepWidthCoefficientA, fp, details);
+    reportFeature(Andor3DDGStepWidthCoefficientB, fp, details);
     
     ADDriver::report(fp, details);
 }    
@@ -1335,6 +1356,24 @@ asynStatus andor3::writeInt32(asynUser *pasynUser, epicsInt32 value)
             status = setFeature(Andor3DDGOutputWidth);
         }
     }
+    else if(index == Andor3DDGStepEnabled) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepEnabled);
+        }
+    }
+    else if(index == Andor3DDGStepDelayMode) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepDelayMode);
+        }
+    }
+    else if(index == Andor3DDGStepWidthMode) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepWidthMode);
+        }
+    }
     else {
         if(index < FIRST_ANDOR3_PARAM) {
             status = ADDriver::writeInt32(pasynUser, value);
@@ -1389,6 +1428,30 @@ asynStatus andor3::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
     }
     else if(index == Andor3FrameRate) {
         status = setFeature(Andor3FrameRate);
+    }
+    else if(index == Andor3DDGStepDelayCoefficientA) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepDelayCoefficientA);
+        }
+    }
+    else if(index == Andor3DDGStepDelayCoefficientB) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepDelayCoefficientB);
+        }
+    }
+    else if(index == Andor3DDGStepWidthCoefficientA) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepWidthCoefficientA);
+        }
+    }
+    else if(index == Andor3DDGStepWidthCoefficientB) {
+        featureInfo *info = &featureInfo_[index];
+        if (info->isImplemented) {
+            status = setFeature(Andor3DDGStepWidthCoefficientB);
+        }
     }
     else {    
         if(index < FIRST_ANDOR3_PARAM) {
@@ -1494,7 +1557,14 @@ andor3::andor3(const char *portName, const char *cameraSerial, int maxBuffers,
     createParam(Andor3DDGOutputSelectString,    asynParamInt32,   &Andor3DDGOutputSelect);
     createParam(Andor3DDGOutputStepEnableString,asynParamInt32,   &Andor3DDGOutputStepEnable);
     createParam(Andor3DDGOutputWidthString,     asynParamInt32,   &Andor3DDGOutputWidth);
-
+    createParam(Andor3DDGStepEnabledString,     asynParamInt32,   &Andor3DDGStepEnabled);
+    createParam(Andor3DDGStepDelayModeString,   asynParamInt32,   &Andor3DDGStepDelayMode);
+    createParam(Andor3DDGStepDelayCoeffAString, asynParamFloat64, &Andor3DDGStepDelayCoefficientA);
+    createParam(Andor3DDGStepDelayCoeffBString, asynParamFloat64, &Andor3DDGStepDelayCoefficientB);
+    createParam(Andor3DDGStepWidthModeString,   asynParamInt32,   &Andor3DDGStepWidthMode);
+    createParam(Andor3DDGStepWidthCoeffAString, asynParamFloat64, &Andor3DDGStepWidthCoefficientA);
+    createParam(Andor3DDGStepWidthCoeffBString, asynParamFloat64, &Andor3DDGStepWidthCoefficientB);
+    
     featureInfo_ = (featureInfo *)calloc(LAST_ANDOR3_PARAM+1, sizeof(featureInfo));
         
     /* set read-only parameters */
@@ -1587,6 +1657,13 @@ andor3::andor3(const char *portName, const char *cameraSerial, int maxBuffers,
     status |= registerFeature(L"DDGOutputSelector",        ATenum,   Andor3DDGOutputSelect);
     status |= registerFeature(L"DDGOutputStepEnable",      ATbool,   Andor3DDGOutputStepEnable);
     status |= registerFeature(L"DDGOutputWidth",           ATint,    Andor3DDGOutputWidth);
+    status |= registerFeature(L"DDGStepEnabled",           ATbool,   Andor3DDGStepEnabled);
+    status |= registerFeature(L"DDGStepDelayMode",         ATenum,   Andor3DDGStepDelayMode);
+    status |= registerFeature(L"DDGStepDelayCoefficientA", ATfloat,  Andor3DDGStepDelayCoefficientA);
+    status |= registerFeature(L"DDGStepDelayCoefficientB", ATfloat,  Andor3DDGStepDelayCoefficientB);
+    status |= registerFeature(L"DDGStepWidthMode",         ATenum,   Andor3DDGStepWidthMode);
+    status |= registerFeature(L"DDGStepWidthCoefficientA", ATfloat,  Andor3DDGStepWidthCoefficientA);
+    status |= registerFeature(L"DDGStepWidthCoefficientB", ATfloat,  Andor3DDGStepWidthCoefficientB);
 
     if(status != AT_SUCCESS) {
         asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,

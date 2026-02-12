@@ -525,3 +525,117 @@ record(ai, "$(P)$(R)DDGOutputWidth_RBV")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_OUTPUT_WIDTH")
     field(SCAN, "I/O Intr")
 }
+
+record(bo, "$(P)$(R)DDGStepEnabled")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_ENABLE")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+}
+
+record(bi, "$(P)$(R)DDGStepEnabled_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_ENABLE")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+}
+
+record(mbbo, "$(P)$(R)DDGStepDelayMode")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_MODE")
+}
+
+record(mbbi, "$(P)$(R)DDGStepDelayMode_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_MODE")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DDGStepDelayCoefficientA")
+{
+    field(PINI, "YES")
+    field(VAL,  "0")
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_COEFF_A")
+}
+
+record(ai, "$(P)$(R)DDGStepDelayCoefficientA_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_COEFF_A")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DDGStepDelayCoefficientB")
+{
+    field(PINI, "YES")
+    field(VAL,  "0")
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_COEFF_B")
+}
+
+record(ai, "$(P)$(R)DDGStepDelayCoefficientB_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_DELAY_COEFF_B")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)DDGStepWidthMode")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_MODE")
+}
+
+record(mbbi, "$(P)$(R)DDGStepWidthMode_RBV")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_MODE")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DDGStepWidthCoefficientA")
+{
+    field(PINI, "YES")
+    field(VAL,  "0")
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_COEFF_A")
+}
+
+record(ai, "$(P)$(R)DDGStepWidthCoefficientA_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_COEFF_A")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)DDGStepWidthCoefficientB")
+{
+    field(PINI, "YES")
+    field(VAL,  "0")
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_COEFF_B")
+}
+
+record(ai, "$(P)$(R)DDGStepWidthCoefficientB_RBV")
+{
+    field(DTYP, "asynFloat64")
+    field(PREC, "0")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))A3_DDG_STEP_WIDTH_COEFF_B")
+    field(SCAN, "I/O Intr")
+}
