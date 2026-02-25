@@ -486,6 +486,7 @@ int andor3::getFeature(int paramIndex, AT_H handle)
     return status;
 }
 
+// TODO: investigate this func
 int andor3::getEnumString(int paramIndex, char *str, int len)
 {
     AT_WC *featureWC = featureInfo_[paramIndex].featureNameWC;
@@ -1115,7 +1116,17 @@ asynStatus andor3::readEnum(asynUser *pasynUser, char *strings[], int values[], 
         if (strings[*nIn]) free(strings[*nIn]);
         status |= AT_GetEnumStringByIndex(handle_, info->featureNameWC, i, 
                                           enumStringWC, MAX_FEATURE_NAME_LEN-1);
-        WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);  
+        WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);
+        asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+            "%s:%s: enum index=%d, strlen=%d, string=%s\n",
+            driverName, functionName, i, (int)strlen(enumString), enumString);
+        // if string is over 32 characters, truncate and print error message
+        if (strlen(enumString) >= 24) {
+            enumString[24] = '\0';
+            asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s:%s: enum string for index %d is too long and was truncated to %s\n",
+                driverName, functionName, i, enumString);
+        }
         strings[*nIn] = epicsStrDup(enumString);
         values[*nIn] = i;
         severities[*nIn] = 0;
