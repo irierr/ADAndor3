@@ -1121,12 +1121,14 @@ asynStatus andor3::readEnum(asynUser *pasynUser, char *strings[], int values[], 
             "%s:%s: enum index=%d, strlen=%d, string=%s\n",
             driverName, functionName, i, (int)strlen(enumString), enumString);
         // if string is over 32 characters, truncate and print error message
-        if (strlen(enumString) >= 24) {
-            enumString[24] = '\0';
-            asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-                "%s:%s: enum string for index %d is too long and was truncated to %s\n",
-                driverName, functionName, i, enumString);
-        }
+        // if (strlen(enumString) >= 24) {
+        //     enumString[24] = '\0';
+        //     asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+        //         "%s:%s: enum string for index %d is too long and was truncated to %s\n",
+        //         driverName, functionName, i, enumString);
+        // }
+        // add \0 to end of string to ensure it's null terminated
+        enumString[sizeof(enumString)-1] = '\0';
         strings[*nIn] = epicsStrDup(enumString);
         values[*nIn] = i;
         severities[*nIn] = 0;
