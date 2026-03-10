@@ -37,6 +37,7 @@
 #include <iocsh.h>
 #include <epicsString.h>
 #include <epicsExit.h>
+#include <db_access.h>
 
 #include <atcore.h>
 
@@ -240,7 +241,7 @@ void andor3::imageTask()
     int status;
     AT_U8  *image;
     int size;
-    char modeString[MAX_FEATURE_NAME_LEN];
+    char modeString[MAX_ENUM_STRING_SIZE];
     int acquire;
     int total;
     int number;
@@ -299,7 +300,7 @@ void andor3::imageTask()
             NDArray *pImage;
             size_t dims[2];
             int itemp;
-            char encodingString[MAX_FEATURE_NAME_LEN];
+            char encodingString[MAX_ENUM_STRING_SIZE];
             AT_64 stride;
             int pixelSize;
 
@@ -517,11 +518,11 @@ int andor3::getEnumString(int paramIndex, char *str, int len)
     AT_WC *featureWC = featureInfo_[paramIndex].featureNameWC;
     int status = 0;
     int enumIndex;
-    AT_WC enumStringWC[MAX_FEATURE_NAME_LEN];
+    AT_WC enumStringWC[MAX_ENUM_STRING_SIZE];
 
     status |= AT_GetEnumIndex(handle_, featureWC, &enumIndex);
     status |= AT_GetEnumStringByIndex(handle_, featureWC, enumIndex, 
-                                      enumStringWC, MAX_FEATURE_NAME_LEN-1);
+                                      enumStringWC, MAX_ENUM_STRING_SIZE-1);
     WCSToMBS(str, enumStringWC, len);
     return status;
 } 
@@ -752,12 +753,12 @@ int andor3::reportFeature(int paramIndex, FILE *fp, int details)
     case ATenum: {
         int i, enumCount;
         AT_BOOL isImplemented, isAvailable;
-        AT_WC enumStringWC[MAX_FEATURE_NAME_LEN];
-        char enumString[MAX_FEATURE_NAME_LEN];
+        AT_WC enumStringWC[MAX_ENUM_STRING_SIZE];
+        char enumString[MAX_ENUM_STRING_SIZE];
         status |= AT_GetEnumCount(handle_, featureWC, &enumCount);
         status |= AT_GetEnumIndex(handle_, featureWC, &enumIndex);
         status |= AT_GetEnumStringByIndex(handle_, featureWC, enumIndex, 
-                                          enumStringWC, MAX_FEATURE_NAME_LEN-1);
+                                          enumStringWC, MAX_ENUM_STRING_SIZE-1);
         WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);  
         fprintf(fp, "  %s: type=Enum, index=%d, value=%s\n", 
                 featureMBS, enumIndex, enumString);
@@ -766,7 +767,7 @@ int andor3::reportFeature(int paramIndex, FILE *fp, int details)
             status |= AT_IsEnumIndexImplemented(handle_, featureWC, i, &isImplemented);
             status |= AT_IsEnumIndexAvailable(handle_, featureWC, i, &isAvailable);
             status |= AT_GetEnumStringByIndex(handle_, featureWC, i, 
-                                              enumStringWC, MAX_FEATURE_NAME_LEN-1);
+                                              enumStringWC, MAX_ENUM_STRING_SIZE-1);
             WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1); 
             fprintf(fp, "    index=%d, Implemented=%s, Available=%s, string=%s\n",
                     i, isImplemented ? "True" : "False", 
@@ -1122,8 +1123,8 @@ asynStatus andor3::readEnum(asynUser *pasynUser, char *strings[], int values[], 
     int index = pasynUser->reason;
     int i;
     int enumCount;
-    AT_WC enumStringWC[MAX_FEATURE_NAME_LEN];
-    char enumString[MAX_FEATURE_NAME_LEN];
+    AT_WC enumStringWC[MAX_ENUM_STRING_SIZE];
+    char enumString[MAX_ENUM_STRING_SIZE];
     AT_BOOL isImplemented;
     int status;
     static const char *functionName = "readEnum";
@@ -1153,8 +1154,16 @@ asynStatus andor3::readEnum(asynUser *pasynUser, char *strings[], int values[], 
         if (!isImplemented) continue;
         if (strings[*nIn]) free(strings[*nIn]);
         status |= AT_GetEnumStringByIndex(handle_, info->featureNameWC, i, 
-                                          enumStringWC, MAX_FEATURE_NAME_LEN-1);
-        WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);  
+                                          enumStringWC, MAX_ENUM_STRING_SIZE-1);
+        WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);
+        asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+            "%s:%s: enum index=%d, strlen=%d, string=%s\n",
+            driverName, functionName, i, (int)strlen(enumString), enumString);
+        // trim trailing spaces from enum string
+        for (int j=strlen(enumString)-1; j>=0; j--) {
+            if (enumString[j] != ' ') break;
+            enumString[j] = '\0';
+        }
         strings[*nIn] = epicsStrDup(enumString);
         values[*nIn] = i;
         severities[*nIn] = 0;
