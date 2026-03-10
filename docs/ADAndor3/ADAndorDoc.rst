@@ -424,6 +424,44 @@ Andor specific parameters
     - A3_MCP_INTELLIGATE
     - MCPIntelligate, MCPIntelligate_RBV
     - bo, bi
+  * - **Digital Delay Generator (DDG) Control**
+  * - Andor3DDGOutputDelay
+    - asynInt32
+    - R/W
+    - Configures the delay (in picoseconds) for the currently selected DDG output.
+    - A3_DDG_OUTPUT_DELAY
+    - DDGOutputDelay, DDGOutputDelay_RBV
+    - ao, ai
+  * - Andor3DDGOutputEnable
+    - asynInt32
+    - R/W
+    - Enable or disable the currently selected DDG output. Has no effect if "Gater" output is selected.
+    - A3_DDG_OUTPUT_ENABLE
+    - DDGOutputEnable, DDGOutputEnable_RBV
+    - bo, bi
+  * - Andor3DDGOutputPolarity
+    - asynInt32
+    - R/W
+    - Configures the polarity for the currently selected DDG output.
+      Choices for iStar are 0 (Negative) and 1 (Positive).
+    - A3_DDG_OUTPUT_POLARITY
+    - DDGOutputPolarity, DDGOutputPolarity_RBV
+    - mbbo, mbbi
+  * - Andor3DDGOutputSelect
+    - asynInt32
+    - R/W
+    - Selects the DDG output that you subsequently wish to configure using the DDG output features.
+      Choices for iStar are 0 (Gater), 1 (Output A), 2 (Output B), and 3 (Output C).
+    - A3_DDG_OUTPUT_SELECT
+    - DDGOutputSelect, DDGOutputSelect_RBV
+    - mbbo, mbbi
+  * - Andor3DDGOutputWidth
+    - asynInt32
+    - R/W
+    - Configures the width (in picoseconds) for the currently selected DDG output.
+    - A3_DDG_OUTPUT_WIDTH
+    - DDGOutputWidth, DDGOutputWidth_RBV
+    - ao, ai
 
 The Andor driver implements the following parameters in addition to
 those in asynNDArrayDriver.h and ADDriver.h.
