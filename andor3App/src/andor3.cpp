@@ -496,7 +496,7 @@ int andor3::getEnumString(int paramIndex, char *str, int len)
 
     status |= AT_GetEnumIndex(handle_, featureWC, &enumIndex);
     status |= AT_GetEnumStringByIndex(handle_, featureWC, enumIndex, 
-                                      enumStringWC, MAX_ENUM_STRING_SIZE-1);
+                                      enumStringWC, MAX_ENUM_STRING_SIZE);
     WCSToMBS(str, enumStringWC, len);
     return status;
 } 
@@ -719,7 +719,7 @@ int andor3::reportFeature(int paramIndex, FILE *fp, int details)
         status |= AT_GetEnumCount(handle_, featureWC, &enumCount);
         status |= AT_GetEnumIndex(handle_, featureWC, &enumIndex);
         status |= AT_GetEnumStringByIndex(handle_, featureWC, enumIndex, 
-                                          enumStringWC, MAX_ENUM_STRING_SIZE-1);
+                                          enumStringWC, MAX_ENUM_STRING_SIZE);
         WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);  
         fprintf(fp, "  %s: type=Enum, index=%d, value=%s\n", 
                 featureMBS, enumIndex, enumString);
@@ -728,7 +728,7 @@ int andor3::reportFeature(int paramIndex, FILE *fp, int details)
             status |= AT_IsEnumIndexImplemented(handle_, featureWC, i, &isImplemented);
             status |= AT_IsEnumIndexAvailable(handle_, featureWC, i, &isAvailable);
             status |= AT_GetEnumStringByIndex(handle_, featureWC, i, 
-                                              enumStringWC, MAX_ENUM_STRING_SIZE-1);
+                                              enumStringWC, MAX_ENUM_STRING_SIZE);
             WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1); 
             fprintf(fp, "    index=%d, Implemented=%s, Available=%s, string=%s\n",
                     i, isImplemented ? "True" : "False", 
@@ -1115,11 +1115,8 @@ asynStatus andor3::readEnum(asynUser *pasynUser, char *strings[], int values[], 
         if (!isImplemented) continue;
         if (strings[*nIn]) free(strings[*nIn]);
         status |= AT_GetEnumStringByIndex(handle_, info->featureNameWC, i, 
-                                          enumStringWC, MAX_ENUM_STRING_SIZE-1);
-        WCSToMBS(enumString, enumStringWC, sizeof(enumString)-1);
-        asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s: enum index=%d, strlen=%d, string=%s\n",
-            driverName, functionName, i, (int)strlen(enumString), enumString);
+                                          enumStringWC, MAX_ENUM_STRING_SIZE);
+        WCSToMBS(enumString, enumStringWC, MAX_ENUM_STRING_SIZE);
         // trim trailing spaces from enum string
         for (int j=strlen(enumString)-1; j>=0; j--) {
             if (enumString[j] != ' ') break;
